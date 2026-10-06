@@ -1,97 +1,53 @@
-var btnA = document.getElementById('btnA')
-var btnS = document.getElementById('btnS')
-var btnD = document.getElementById('btnD')
-var btnF = document.getElementById('btnF')
-var btnG = document.getElementById('btnG')
-var btnH = document.getElementById('btnH')
-var btnJ = document.getElementById('btnJ')
-var btnK = document.getElementById('btnK')
-var btnL = document.getElementById('btnL')
-var audioA = document.getElementById('audioA')
-var audioS = document.getElementById('audioS')
-var audioD = document.getElementById('audioD')
-var audioF = document.getElementById('audioF')
-var audioG = document.getElementById('audioG')
-var audioH = document.getElementById('audioH')
-var audioJ = document.getElementById('audioJ')
-var audioK = document.getElementById('audioK')
-var audioL = document.getElementById('audioL')
+const sounds = {
+    KeyA: { button: 'btnA', audio: 'audioA' },
+    KeyS: { button: 'btnS', audio: 'audioS' },
+    KeyD: { button: 'btnD', audio: 'audioD' },
+    KeyF: { button: 'btnF', audio: 'audioF' },
+    KeyG: { button: 'btnG', audio: 'audioG' },
+    KeyH: { button: 'btnH', audio: 'audioH' },
+    KeyJ: { button: 'btnJ', audio: 'audioJ' },
+    KeyK: { button: 'btnK', audio: 'audioK' },
+    KeyL: { button: 'btnL', audio: 'audioL' }
+};
 
-window.addEventListener("keydown", function(event) {
-    if(event.code == 'KeyA') {
-        audioA.currentTime = 0;
-        audioA.play();
-        btnA.classList.add('playing')
-    }
-});
+let currentAudio = null;
+let currentButton = null;
 
-window.addEventListener("keydown", function(event) {
-    if(event.code == 'KeyS') {
-        audioS.currentTime = 0;
-        audioS.play();
-        btnS.classList.add('playing')
+window.addEventListener('keydown', function (event) {
+    const sound = sounds[event.code];
+
+    if (!sound || event.repeat) {
+        return;
     }
-});
-window.addEventListener("keydown", function(event) {
-    if(event.code == 'KeyD') {
-        audioD.currentTime = 0;
-        audioD.play();
-        btnD.classList.add('playing')
+
+    const audio = document.getElementById(sound.audio);
+    const button = document.getElementById(sound.button);
+
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
     }
-});
-window.addEventListener("keydown", function(event) {
-    if(event.code == 'KeyF') {
-        audioF.currentTime = 0;
-        audioF.play();
-        btnF.classList.add('playing')
+
+    if (currentButton) {
+        currentButton.classList.remove('playing');
     }
-});
-window.addEventListener("keydown", function(event) {
-    if(event.code == 'KeyG') {
-        audioG.currentTime = 0;
-        audioG.play();
-        btnG.classList.add('playing')
-    }
-});
-window.addEventListener("keydown", function(event) {
-    if(event.code == 'KeyH') {
-        audioH.currentTime = 0;
-        audioH.play();
-        btnH.classList.add('playing')
-    }
-});
-window.addEventListener("keydown", function(event) {
-    if(event.code == 'KeyJ') {
-        audioJ.currentTime = 0;
-        audioJ.play();
-        btnJ.classList.add('playing')
-    }
-});
-window.addEventListener("keydown", function(event) {
-    if(event.code == 'KeyK') {
-        audioK.currentTime = 0;
-        audioK.play();
-        btnK.classList.add('playing')
-    }
-});
-window.addEventListener("keydown", function(event) {
-    if(event.code == 'KeyL') {
-        audioL.currentTime = 0;
-        audioL.play();
-        btnL.classList.add('playing')
-    }
+
+    audio.currentTime = 0;
+    audio.play();
+
+    button.classList.add('playing');
+
+    currentAudio = audio;
+    currentButton = button;
 });
 
-window.addEventListener('keyup', function(){
-    btnA.classList.remove('playing')
-    btnS.classList.remove('playing')
-    btnD.classList.remove('playing')
-    btnF.classList.remove('playing')
-    btnG.classList.remove('playing')
-    btnH.classList.remove('playing')
-    btnJ.classList.remove('playing')
-    btnK.classList.remove('playing')
-    btnL.classList.remove('playing')
-})
+window.addEventListener('keyup', function (event) {
+    const sound = sounds[event.code];
 
+    if (!sound) {
+        return;
+    }
 
+    const button = document.getElementById(sound.button);
+    button.classList.remove('playing');
+});
